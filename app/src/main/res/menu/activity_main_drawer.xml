@@ -5,19 +5,19 @@
         <item
             android:id="@+id/nav_wroclaw"
             android:icon="@drawable/ic_location"
-            android:title="Wroclaw"/>
+            android:title="@string/wroclaw"/>
         <item
             android:id="@+id/nav_warsaw"
             android:icon="@drawable/ic_location"
-            android:title="Warsaw"/>
+            android:title="@string/warsaw"/>
         <item
             android:id="@+id/nav_london"
             android:icon="@drawable/ic_location"
-            android:title="London"/>
+            android:title="@string/london"/>
         <item
             android:id="@+id/nav_new_york"
             android:icon="@drawable/ic_location"
-            android:title="New York"/>
+            android:title="@string/new_york"/>
     </group>
 
 </menu>

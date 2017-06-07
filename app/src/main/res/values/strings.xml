@@ -2,4 +2,10 @@
     <string name="app_name">Cr Weather</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="android_icon">Android icon</string>
+    <string name="email">marek.langiewicz@gmail.com</string>
+    <string name="wroclaw">Wroclaw</string>
+    <string name="warsaw">Warsaw</string>
+    <string name="london">London</string>
+    <string name="new_york">New York</string>
 </resources>

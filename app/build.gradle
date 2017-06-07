@@ -27,7 +27,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "android.arch.lifecycle:runtime:$android_arch_version"
     compile "android.arch.lifecycle:extensions:$android_arch_version"
     annotationProcessor "android.arch.lifecycle:compiler:$android_arch_version"
