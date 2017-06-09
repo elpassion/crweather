@@ -47,10 +47,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun initModel() {
         val model = ViewModelProviders.of(this).get(MainModel::class.java)
-        model.loading.observe(this, Observer {
-            progress.visibility = if (it == true) View.VISIBLE else View.INVISIBLE
-        })
-        model.city.observe(this, Observer { Log.w("CRW", "TODO: display city: $it") })
-        model.charts.observe(this, Observer { Log.w("CRW", "TODO: display charts:\n$it") })
+        model.loading.observe(this, Observer { displayLoading(it ?: false) })
+        model.city.observe(this, Observer { displayCity(it ?: "") })
+        model.charts.observe(this, Observer { displayCharts(it ?: emptyList()) })
+    }
+
+    private fun displayLoading(loading: Boolean) {
+        Log.w("CRW", "displaying loading: $loading")
+        progress.visibility = if (loading == true) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun displayCity(city: String) {
+        Log.w("CRW", "displaying city: $city")
+        title = city
+        for (item in navigation.menu) {
+            item.isChecked = item.title == city
+        }
+    }
+
+    private fun displayCharts(charts: List<Chart>) {
+        Log.w("CRW", "displaying charts:\n$charts") // TODO
     }
 }
