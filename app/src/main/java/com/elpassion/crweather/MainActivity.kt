@@ -11,8 +11,10 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, LifecycleRegistryOwner {
 
@@ -45,7 +47,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun initModel() {
         val model = ViewModelProviders.of(this).get(MainModel::class.java)
-        model.loading.observe(this, Observer { Log.w("CRW", "TODO: display loading: $it") })
+        model.loading.observe(this, Observer {
+            progress.visibility = if (it == true) View.VISIBLE else View.INVISIBLE
+        })
         model.city.observe(this, Observer { Log.w("CRW", "TODO: display city: $it") })
         model.charts.observe(this, Observer { Log.w("CRW", "TODO: display charts:\n$it") })
     }

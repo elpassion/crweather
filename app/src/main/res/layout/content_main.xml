@@ -9,6 +9,16 @@
     tools:context="com.elpassion.crweather.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <ProgressBar
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress"
+        android:indeterminate="true"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
