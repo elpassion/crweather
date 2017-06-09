@@ -10,22 +10,26 @@
     tools:showIn="@layout/app_bar_main">
 
     <ProgressBar
+        android:id="@+id/progress"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:id="@+id/progress"
-        android:indeterminate="true"
-        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:indeterminate="true"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progress"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        />
 
 </android.support.constraint.ConstraintLayout>
