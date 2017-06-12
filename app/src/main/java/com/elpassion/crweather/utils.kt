@@ -1,7 +1,7 @@
 package com.elpassion.crweather
 
-import android.view.Menu
-import android.view.MenuItem
+import android.support.annotation.LayoutRes
+import android.view.*
 
 
 operator fun Menu.iterator() = object : Iterator<MenuItem> {
@@ -9,3 +9,10 @@ operator fun Menu.iterator() = object : Iterator<MenuItem> {
     override fun hasNext() = current < size()
     override fun next() = getItem(current++)
 }
+
+fun ViewGroup.inflate(@LayoutRes layoutId: Int, attachToRoot: Boolean = false): View {
+    val inflater = LayoutInflater.from(context)
+    return inflater.inflate(layoutId, this, attachToRoot)
+}
+
+operator fun StringBuilder.plusAssign(string: String) { append(string) }

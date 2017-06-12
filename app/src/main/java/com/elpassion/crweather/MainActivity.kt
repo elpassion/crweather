@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     val registry = LifecycleRegistry(this);
 
+    val adapter = ChartsAdapter()
+
     override fun getLifecycle() = registry // can not use LifecycleActivity (it does not have setSupportActionBar)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer.addDrawerListener(toggle)
         toggle.syncState()
         navigation.setNavigationItemSelectedListener(this)
+        recycler.adapter = adapter
         initModel()
     }
 
@@ -66,6 +69,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun displayCharts(charts: List<Chart>) {
-        Log.w("CRW", "displaying charts:\n$charts") // TODO
+        Log.w("CRW", "displaying charts:\n$charts")
+        adapter.charts = charts
     }
 }
