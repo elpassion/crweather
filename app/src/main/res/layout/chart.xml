@@ -9,11 +9,10 @@
     android:padding="4dp"
     >
 
-    <TextView
-        android:id="@+id/description"
+    <com.elpassion.crweather.ChartView
+        android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:layout_height="80dp"
         />
 
 </android.support.v7.widget.CardView>
