@@ -29,12 +29,15 @@ dependencies {
     compile "com.android.support:design:$android_support_version"
     compile "com.android.support:recyclerview-v7:$android_support_version"
     compile "com.android.support:cardview-v7:$android_support_version"
-    compile "com.android.support.constraint:constraint-layout:1.0.2"
+    compile "com.android.support.constraint:constraint-layout:$constraint_layout_version"
     compile "android.arch.lifecycle:runtime:$android_arch_version"
     compile "android.arch.lifecycle:extensions:$android_arch_version"
+    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    compile "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    compile "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     annotationProcessor "android.arch.lifecycle:compiler:$android_arch_version"
-    testCompile "junit:junit:4.12"
-    androidTestCompile("com.android.support.test.espresso:espresso-core:2.2.2", {
+    testCompile "junit:junit:$junit_version"
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$espresso_version", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }
