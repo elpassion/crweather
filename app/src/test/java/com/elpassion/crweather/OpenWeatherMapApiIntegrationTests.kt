@@ -7,7 +7,7 @@ import org.junit.Test
 @Ignore
 class OpenWeatherMapApiIntegrationTests {
 
-    val appid = "8932d2a1192be84707c381df649a2925"
+    val appid = "f08f5bce8d0fe0c0903f145a88d773f8"
 
     // Moshi adapters just for logging..
     val moshi = Moshi.Builder().build()
