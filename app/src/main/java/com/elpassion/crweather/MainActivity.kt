@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     val adapter = ChartsAdapter()
 
+    lateinit var model: MainModel
+
     override fun getLifecycle() = registry // can not use LifecycleActivity (it does not have setSupportActionBar)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,13 +45,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        Log.w("CRW", "TODO: convert \"$item\" to user action and send to view model")
         drawer.closeDrawer(GravityCompat.START)
+        model.selectCity(item.title.toString())
         return true
     }
 
     private fun initModel() {
-        val model = ViewModelProviders.of(this).get(MainModel::class.java)
+        model = ViewModelProviders.of(this).get(MainModel::class.java)
         model.loading.observe(this, Observer { displayLoading(it ?: false) })
         model.city.observe(this, Observer { displayCity(it ?: "") })
         model.charts.observe(this, Observer { displayCharts(it ?: emptyList()) })

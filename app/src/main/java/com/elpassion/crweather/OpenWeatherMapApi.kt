@@ -195,7 +195,7 @@ object OpenWeatherMapApi {
                 @Query("appid") appid: String,
                 @Query("q") city: String,
                 @Query("cnt") cnt: Long? = null,
-                @Query("units") units: String?): Call<Forecasts>
+                @Query("units") units: String? = null): Call<Forecasts>
 
         /**
          * Up to 16 days daily forecasts for given city
@@ -208,7 +208,7 @@ object OpenWeatherMapApi {
                 @Query("appid") appid: String,
                 @Query("q") city: String,
                 @Query("cnt") cnt: Long? = null,
-                @Query("units") units: String?): Call<DailyForecasts>
+                @Query("units") units: String? = null): Call<DailyForecasts>
     }
 
     private val interceptor = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }

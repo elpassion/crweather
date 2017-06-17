@@ -1,10 +1,16 @@
 package com.elpassion.crweather
 
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.support.annotation.LayoutRes
 import android.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import kotlin.coroutines.experimental.Continuation
+import kotlin.coroutines.experimental.suspendCoroutine
 
 
 operator fun Menu.iterator() = object : Iterator<MenuItem> {
@@ -52,3 +58,100 @@ fun area(xRange: ClosedFloatingPointRange<Float>, yRange: ClosedFloatingPointRan
 val Canvas.area get() = area(widthRange, heightRange)
 
 val Chart.area get() = area(inputRange, outputRange.flip())
+
+
+suspend fun <T> Call<T>.await(): T = suspendCoroutine<T> { continuation ->
+
+    val callback = object : Callback<T> {
+
+        override fun onFailure(call: Call<T>, t: Throwable) {
+            continuation.resumeWithException(t)
+        }
+
+        override fun onResponse(call: Call<T>, response: Response<T>) = continuation.resumeNormallyOrWithException {
+            response.isSuccessful || throw IllegalStateException("Http error ${response.code()}")
+            response.body() ?: throw IllegalStateException("Response body is null")
+        }
+    }
+
+    enqueue(callback) // TODO: cancellation (invoke Call.cancel() when coroutine is cancelled)
+}
+
+inline fun <T> Continuation<T>.resumeNormallyOrWithException(getter: () -> T) {
+    try {
+        val result = getter()
+        resume(result)
+    } catch (exception: Throwable) {
+        resumeWithException(exception)
+    }
+}
+
+
+val List<OpenWeatherMapApi.DailyForecast>.minTemp get() = map { it.temp?.min }.filterNotNull().min()
+
+val List<OpenWeatherMapApi.DailyForecast>.maxTemp get() = map { it.temp?.max }.filterNotNull().max()
+
+val List<OpenWeatherMapApi.DailyForecast>.minWindSpeed get() = map { it.speed }.filterNotNull().min()
+
+val List<OpenWeatherMapApi.DailyForecast>.maxWindSpeed get() = map { it.speed }.filterNotNull().max()
+
+val BLUE_LIGHT = 0x220000FF
+val BLACK_LIGHT = 0x22000000
+
+/**
+ * WARNING: The list has to have at least two forecasts
+ */
+val List<OpenWeatherMapApi.DailyForecast>.tempChart: Chart get() {
+
+    require(size > 1) { "Can not create a chart with less then two measurements" } // maybe: return some chart for just one measurement?
+
+    return Chart(
+            inputRange = first().dt.toFloat()..last().dt.toFloat(),
+            outputRange = (minTemp ?: -30f) - 5f..(maxTemp ?: 70f) + 5f,
+            lines = listOf(
+                    Line("Maximum temperature (\u2103C)", BLUE_LIGHT, toPoints { temp?.max }),
+                    Line("Minimum temperature (\u2103C)", BLACK_LIGHT, toPoints { temp?.min }),
+                    Line("Day temperature (\u2103C)", Color.BLUE, toPoints { temp?.day }),
+                    Line("Night temperature (\u2103C)", Color.BLACK, toPoints { temp?.night })
+            )
+    )
+}
+
+/**
+ * WARNING: The list has to have at least two forecasts
+ */
+val List<OpenWeatherMapApi.DailyForecast>.humidityAndCloudinessChart: Chart get() {
+
+    require(size > 1) { "Can not create a chart with less then two measurements" } // maybe: return some chart for just one measurement?
+
+    return Chart(
+            inputRange = first().dt.toFloat()..last().dt.toFloat(),
+            outputRange = -5f..105f,
+            lines = listOf(
+                    Line("Humidity (%)", Color.GREEN, toPoints { humidity.takeIf { it != 0 }?.toFloat() }),
+                    Line("Cloudiness (%)", Color.BLUE, toPoints { clouds.takeIf { it != 0 }?.toFloat() })
+            )
+    )
+}
+
+/**
+ * WARNING: The list has to have at least two forecasts
+ */
+val List<OpenWeatherMapApi.DailyForecast>.windSpeedChart: Chart get() {
+
+    require(size > 1) { "Can not create a chart with less then two measurements" } // maybe: return some chart for just one measurement?
+
+    return Chart(
+            inputRange = first().dt.toFloat()..last().dt.toFloat(),
+            outputRange = (minWindSpeed ?: 0f) - 1f..(maxWindSpeed ?: 100f) + 1f,
+            lines = listOf(
+                    Line("Wind speed (meter/s)", Color.DKGRAY, toPoints { speed })
+            )
+    )
+}
+
+fun OpenWeatherMapApi.DailyForecast.toPointOrNull(toValue: OpenWeatherMapApi.DailyForecast.() -> Float?)
+        = toValue()?.let { Point(dt.toFloat(), it) }
+
+fun List<OpenWeatherMapApi.DailyForecast>.toPoints(toValue: OpenWeatherMapApi.DailyForecast.() -> Float?)
+        = map { it.toPointOrNull(toValue) }.filterNotNull()
