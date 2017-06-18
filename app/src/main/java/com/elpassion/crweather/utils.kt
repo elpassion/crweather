@@ -12,6 +12,8 @@ import retrofit2.Response
 import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
 
+@Suppress("unused")
+val Any?.unit get() = Unit
 
 operator fun Menu.iterator() = object : Iterator<MenuItem> {
     private var current = 0
@@ -24,9 +26,7 @@ fun ViewGroup.inflate(@LayoutRes layoutId: Int, attachToRoot: Boolean = false): 
     return inflater.inflate(layoutId, this, attachToRoot)
 }
 
-operator fun StringBuilder.plusAssign(string: String) {
-    append(string)
-}
+operator fun StringBuilder.plusAssign(string: String) = append(string).unit
 
 fun <T> List<T>.changes(destination: MutableList<Pair<T, T>> = ArrayList(size)): MutableList<Pair<T, T>> {
     for (i in 0..size - 2)
@@ -63,11 +63,7 @@ val Chart.area get() = area(inputRange, outputRange.flip())
 suspend fun <T> Call<T>.await(): T = suspendCoroutine { continuation ->
 
     val callback = object : Callback<T> {
-
-        override fun onFailure(call: Call<T>, t: Throwable) {
-            continuation.resumeWithException(t)
-        }
-
+        override fun onFailure(call: Call<T>, t: Throwable) = continuation.resumeWithException(t)
         override fun onResponse(call: Call<T>, response: Response<T>) = continuation.resumeNormallyOrWithException {
             response.isSuccessful || throw IllegalStateException("Http error ${response.code()}")
             response.body() ?: throw IllegalStateException("Response body is null")
@@ -77,13 +73,11 @@ suspend fun <T> Call<T>.await(): T = suspendCoroutine { continuation ->
     enqueue(callback) // TODO: cancellation (invoke Call.cancel() when coroutine is cancelled)
 }
 
-inline fun <T> Continuation<T>.resumeNormallyOrWithException(getter: () -> T) {
-    try {
-        val result = getter()
-        resume(result)
-    } catch (exception: Throwable) {
-        resumeWithException(exception)
-    }
+inline fun <T> Continuation<T>.resumeNormallyOrWithException(getter: () -> T) = try {
+    val result = getter()
+    resume(result)
+} catch (exception: Throwable) {
+    resumeWithException(exception)
 }
 
 
