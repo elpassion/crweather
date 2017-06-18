@@ -6,14 +6,14 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.support.annotation.LayoutRes
 import android.view.*
+import com.elpassion.crweather.OpenWeatherMapApi.DailyForecast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
 
-@Suppress("unused")
-val Any?.unit get() = Unit
+@Suppress("unused") val Any?.unit get() = Unit
 
 operator fun Menu.iterator() = object : Iterator<MenuItem> {
     private var current = 0
@@ -34,31 +34,18 @@ fun <T> List<T>.changes(destination: MutableList<Pair<T, T>> = ArrayList(size)):
     return destination
 }
 
-val Canvas.widthRange get() = 0f..width.toFloat()
-
-val Canvas.heightRange get() = 0f..height.toFloat()
-
 fun Canvas.drawCircle(point: Point, radius: Float, paint: Paint) = drawCircle(point.x, point.y, radius, paint)
 
 fun Canvas.drawLine(points: Pair<Point, Point>, paint: Paint) = drawLine(points.first.x, points.first.y, points.second.x, points.second.y, paint)
-
-val ClosedFloatingPointRange<Float>.span get() = endInclusive - start
-
-fun ClosedFloatingPointRange<Float>.flip() = endInclusive..start
-
-fun Float.scale(fromRange: ClosedFloatingPointRange<Float>, toRange: ClosedFloatingPointRange<Float>) = toRange.start + (this - fromRange.start) * toRange.span / fromRange.span
 
 fun Point.scale(from: RectF, to: RectF) = Point(
         x.scale(from.left..from.right, to.left..to.right),
         y.scale(from.top..from.bottom, to.top..to.bottom)
 )
 
-fun area(xRange: ClosedFloatingPointRange<Float>, yRange: ClosedFloatingPointRange<Float>) = RectF(xRange.start, yRange.start, xRange.endInclusive, yRange.endInclusive)
-
 val Canvas.area get() = area(widthRange, heightRange)
 
 val Chart.area get() = area(inputRange, outputRange.flip())
-
 
 suspend fun <T> Call<T>.await(): T = suspendCoroutine { continuation ->
 
@@ -73,29 +60,10 @@ suspend fun <T> Call<T>.await(): T = suspendCoroutine { continuation ->
     enqueue(callback) // TODO: cancellation (invoke Call.cancel() when coroutine is cancelled)
 }
 
-inline fun <T> Continuation<T>.resumeNormallyOrWithException(getter: () -> T) = try {
-    val result = getter()
-    resume(result)
-} catch (exception: Throwable) {
-    resumeWithException(exception)
-}
-
-
-val List<OpenWeatherMapApi.DailyForecast>.minTemp get() = map { it.temp?.min }.filterNotNull().min()
-
-val List<OpenWeatherMapApi.DailyForecast>.maxTemp get() = map { it.temp?.max }.filterNotNull().max()
-
-val List<OpenWeatherMapApi.DailyForecast>.minWindSpeed get() = map { it.speed }.filterNotNull().min()
-
-val List<OpenWeatherMapApi.DailyForecast>.maxWindSpeed get() = map { it.speed }.filterNotNull().max()
-
-val BLUE_LIGHT = 0x220000FF
-val BLACK_LIGHT = 0x22000000
-
 /**
  * WARNING: The list has to have at least two forecasts
  */
-val List<OpenWeatherMapApi.DailyForecast>.tempChart: Chart get() {
+val List<DailyForecast>.tempChart: Chart get() {
 
     require(size > 1) { "Can not create a chart with less then two measurements" } // maybe: return some chart for just one measurement?
 
@@ -114,7 +82,7 @@ val List<OpenWeatherMapApi.DailyForecast>.tempChart: Chart get() {
 /**
  * WARNING: The list has to have at least two forecasts
  */
-val List<OpenWeatherMapApi.DailyForecast>.humidityAndCloudinessChart: Chart get() {
+val List<DailyForecast>.humidityAndCloudinessChart: Chart get() {
 
     require(size > 1) { "Can not create a chart with less then two measurements" } // maybe: return some chart for just one measurement?
 
@@ -131,7 +99,7 @@ val List<OpenWeatherMapApi.DailyForecast>.humidityAndCloudinessChart: Chart get(
 /**
  * WARNING: The list has to have at least two forecasts
  */
-val List<OpenWeatherMapApi.DailyForecast>.windSpeedChart: Chart get() {
+val List<DailyForecast>.windSpeedChart: Chart get() {
 
     require(size > 1) { "Can not create a chart with less then two measurements" } // maybe: return some chart for just one measurement?
 
@@ -144,8 +112,40 @@ val List<OpenWeatherMapApi.DailyForecast>.windSpeedChart: Chart get() {
     )
 }
 
-fun OpenWeatherMapApi.DailyForecast.toPointOrNull(toValue: OpenWeatherMapApi.DailyForecast.() -> Float?)
+private val ClosedFloatingPointRange<Float>.span get() = endInclusive - start
+
+private fun Float.scale(fromRange: ClosedFloatingPointRange<Float>, toRange: ClosedFloatingPointRange<Float>) = toRange.start + (this - fromRange.start) * toRange.span / fromRange.span
+
+private fun area(xRange: ClosedFloatingPointRange<Float>, yRange: ClosedFloatingPointRange<Float>) = RectF(xRange.start, yRange.start, xRange.endInclusive, yRange.endInclusive)
+
+private val Canvas.widthRange get() = 0f..width.toFloat()
+
+private val Canvas.heightRange get() = 0f..height.toFloat()
+
+private fun ClosedFloatingPointRange<Float>.flip() = endInclusive..start
+
+private inline fun <T> Continuation<T>.resumeNormallyOrWithException(getter: () -> T) = try {
+    val result = getter()
+    resume(result)
+} catch (exception: Throwable) {
+    resumeWithException(exception)
+}
+
+
+private val List<DailyForecast>.minTemp get() = map { it.temp?.min }.filterNotNull().min()
+
+private val List<DailyForecast>.maxTemp get() = map { it.temp?.max }.filterNotNull().max()
+
+private val List<DailyForecast>.minWindSpeed get() = map { it.speed }.filterNotNull().min()
+
+private val List<DailyForecast>.maxWindSpeed get() = map { it.speed }.filterNotNull().max()
+
+private val BLUE_LIGHT = 0x220000FF
+
+private val BLACK_LIGHT = 0x22000000
+
+private fun DailyForecast.toPointOrNull(toValue: DailyForecast.() -> Float?)
         = toValue()?.let { Point(dt.toFloat(), it) }
 
-fun List<OpenWeatherMapApi.DailyForecast>.toPoints(toValue: OpenWeatherMapApi.DailyForecast.() -> Float?)
+private fun List<DailyForecast>.toPoints(toValue: DailyForecast.() -> Float?)
         = map { it.toPointOrNull(toValue) }.filterNotNull()
