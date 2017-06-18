@@ -30,13 +30,13 @@ class ChartView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         // TODO: draw some legend, scale, lines names
-        for (line in chart.lines) {
-            paint.color = line.color
+        for ((_, color, points) in chart.lines) {
+            paint.color = color
             buffer.clear()
-            line.points.changes(buffer)
+            points.changes(buffer)
             for ((begin, end) in buffer)
                 canvas.drawLine(begin.scale(chart.area, canvas.area) to end.scale(chart.area, canvas.area), paint)
-            for (point in line.points)
+            for (point in points)
                 canvas.drawCircle(point.scale(chart.area, canvas.area), 3f, paint)
         }
     }
