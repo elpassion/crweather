@@ -18,3 +18,6 @@ data class Line(
 
 data class Point(val x: Float, val y: Float)
 
+sealed class Action
+
+data class SelectCity(val city: String) : Action()

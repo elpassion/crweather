@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         drawer.closeDrawer(GravityCompat.START)
-        model.selectCity(item.title.toString())
+        model.action(SelectCity(item.title.toString()))
         return true
     }
 

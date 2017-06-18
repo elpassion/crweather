@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.channels.actor
 
 
 class MainModel : ViewModel() {
@@ -17,17 +17,27 @@ class MainModel : ViewModel() {
     val charts: LiveData<List<Chart>> = charts_
     val loading: LiveData<Boolean> = loading_
 
-    init {
-        selectCity("Warsaw")
-    }
-
-    fun selectCity(city: String) {
-        // TODO: real implementation (use coroutines actor)
-        async(UI) {
-            city_.value = city
-            loading_.value = true
-            charts_.value = Repository.getCityCharts(city)
-            loading_.value = false
+    val actor = actor<Action>(UI, 1) {
+        for (action in channel) when (action) {
+            is SelectCity -> {
+                city_.value = action.city
+                loading_.value = true
+                charts_.value = Repository.getCityCharts(action.city)
+                loading_.value = false
+            }
         }
     }
+
+    init {
+        action(SelectCity("Warsaw"))
+    }
+
+    fun action(action: Action) {
+        actor.offer(action)
+    }
+
+    override fun onCleared() {
+        actor.cancel()
+    }
 }
+
