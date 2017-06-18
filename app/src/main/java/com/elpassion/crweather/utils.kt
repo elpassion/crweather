@@ -60,7 +60,7 @@ val Canvas.area get() = area(widthRange, heightRange)
 val Chart.area get() = area(inputRange, outputRange.flip())
 
 
-suspend fun <T> Call<T>.await(): T = suspendCoroutine<T> { continuation ->
+suspend fun <T> Call<T>.await(): T = suspendCoroutine { continuation ->
 
     val callback = object : Callback<T> {
 

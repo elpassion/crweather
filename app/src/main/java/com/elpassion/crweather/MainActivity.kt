@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, LifecycleRegistryOwner {
 
-    val registry = LifecycleRegistry(this);
+    val registry = LifecycleRegistry(this)
 
     val adapter = ChartsAdapter()
 

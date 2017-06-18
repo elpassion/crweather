@@ -10,10 +10,10 @@ class OpenWeatherMapApiIntegrationTests {
     val appid = Repository.appid
 
     // Moshi adapters just for logging..
-    val moshi = Moshi.Builder().build()
-    val moshiForecastAdapter = moshi.adapter(OpenWeatherMapApi.Forecast::class.java)
-    val moshiForecastsAdapter = moshi.adapter(OpenWeatherMapApi.Forecasts::class.java)
-    val moshiDailyForecastsAdapter = moshi.adapter(OpenWeatherMapApi.DailyForecasts::class.java)
+    val moshi = Moshi.Builder().build()!!
+    val moshiForecastAdapter = moshi.adapter(OpenWeatherMapApi.Forecast::class.java)!!
+    val moshiForecastsAdapter = moshi.adapter(OpenWeatherMapApi.Forecasts::class.java)!!
+    val moshiDailyForecastsAdapter = moshi.adapter(OpenWeatherMapApi.DailyForecasts::class.java)!!
 
     fun log(msg: Any?) = println(msg)
     fun log(forecast: OpenWeatherMapApi.Forecast?) = log(moshiForecastAdapter.toJson(forecast))
