@@ -20,7 +20,7 @@ class MainModel : ViewModel() {
     val loading: LiveData<Boolean> = loading_
 
     val actor = actor<Action>(UI, 1) {
-        for (action in channel) when (action) {
+        for (action in this) when (action) {
             is SelectCity -> {
                 city_.value = action.city
                 loading_.value = true
@@ -32,7 +32,7 @@ class MainModel : ViewModel() {
 
     init { action(SelectCity("Warsaw")) }
 
-    fun action(action: Action) = actor.offer(action)
+    fun action(action: Action) = actor.offer(action).unit
 
     override fun onCleared() = actor.cancel().unit
 
