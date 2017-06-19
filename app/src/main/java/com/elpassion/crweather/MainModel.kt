@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.channels.Channel
 import kotlinx.coroutines.experimental.channels.actor
 
 
@@ -19,7 +20,7 @@ class MainModel : ViewModel() {
     val charts: LiveData<List<Chart>> = charts_
     val loading: LiveData<Boolean> = loading_
 
-    val actor = actor<Action>(UI, 1) {
+    val actor = actor<Action>(UI, Channel.CONFLATED) {
         for (action in this) when (action) {
             is SelectCity -> {
                 city_.value = action.city
