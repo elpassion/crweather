@@ -10,6 +10,7 @@ import com.elpassion.crweather.OpenWeatherMapApi.DailyForecast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
 
@@ -111,6 +112,21 @@ val List<DailyForecast>.windSpeedChart: Chart get() {
             )
     )
 }
+
+fun Map<String, List<Chart>>.getFreshCharts(city: String) = get(city)?.takeIf {
+    it.isNotEmpty() && it.first().time + CACHE_TIME > System.currentTimeMillis()
+}
+
+fun Canvas.drawStatus(status: String, paint: Paint = STATUS_PAINT) = drawText(status, 10f, 30f, paint)
+
+fun Long.toTimeString() = String.format(Locale.US, "%tT", this)
+
+private val STATUS_PAINT = Paint().apply {
+    textSize = 22f
+    isAntiAlias = true
+}
+
+private val CACHE_TIME = 1000 * 60 * 60 // one hour
 
 private val ClosedFloatingPointRange<Float>.span get() = endInclusive - start
 

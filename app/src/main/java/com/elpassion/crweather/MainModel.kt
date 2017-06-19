@@ -9,6 +9,8 @@ import kotlinx.coroutines.experimental.channels.actor
 
 class MainModel : ViewModel() {
 
+    private val cache = HashMap<String, List<Chart>>(10)
+
     private val city_ = MutableLiveData<String>().apply { value = "" }
     private val charts_ = MutableLiveData<List<Chart>>().apply { value = emptyList() }
     private val loading_ = MutableLiveData<Boolean>().apply { value = false }
@@ -22,7 +24,7 @@ class MainModel : ViewModel() {
             is SelectCity -> {
                 city_.value = action.city
                 loading_.value = true
-                charts_.value = Repository.getCityCharts(action.city)
+                charts_.value = cache.getFreshCharts(action.city) ?: getNewCharts(action.city)
                 loading_.value = false
             }
         }
@@ -33,5 +35,7 @@ class MainModel : ViewModel() {
     fun action(action: Action) = actor.offer(action)
 
     override fun onCleared() = actor.cancel().unit
+
+    private suspend fun getNewCharts(city: String) = Repository.getCityCharts(city).also { cache[city] = it }
 }
 

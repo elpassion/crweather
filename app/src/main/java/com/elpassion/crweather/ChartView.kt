@@ -30,6 +30,7 @@ class ChartView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         // TODO: draw some legend, scale, lines names
+        canvas.drawStatus("time: ${chart.time.toTimeString()}")
         for ((_, color, points) in chart.lines) {
             paint.color = color
             buffer.clear()
