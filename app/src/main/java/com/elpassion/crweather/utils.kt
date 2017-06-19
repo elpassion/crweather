@@ -115,16 +115,25 @@ val List<DailyForecast>.windSpeedChart: Chart get() {
 }
 
 fun Map<String, List<Chart>>.getFreshCharts(city: String) = get(city)?.takeIf {
-    it.isNotEmpty() && it.first().time + CACHE_TIME > System.currentTimeMillis() / 1000
+    it.isNotEmpty() && it.first().timeMs + CACHE_TIME > currentTimeMs
 }
 
 fun Canvas.drawStatus(status: String, x: Float = 4f, y: Float = 16f, @ColorInt color: Int = Color.BLACK) = drawText(status, x, y, STATUS_PAINT.withColor(color))
 
-fun Float.toTimeString() = "%tT".format(this.toLong() * 1000)
+val Float.asTimeMs get() = toLong() * 1000
 
-fun Float.toDateTimeString() = "%tF".format(this.toLong() * 1000)
+val Long.asTimeString get() = "%tT".format(this)
 
-fun Float.toMeasurementString() = "%.2f".format(this)
+val Long.asDateString get() = "%tF".format(this)
+
+val Float.asMeasurementString get() = "%.2f".format(this)
+
+
+val currentTimeMs get() = System.currentTimeMillis()
+
+val currentTimeString get() = "%tT".format(currentTimeMs)
+
+val Any.println get() = println("CrWeather [$currentTimeString] $this")
 
 private val STATUS_PAINT = Paint().apply {
     textSize = 12f
@@ -133,7 +142,7 @@ private val STATUS_PAINT = Paint().apply {
 
 private fun Paint.withColor(@ColorInt acolor: Int) = Paint().also { it.set(this); it.color = acolor }
 
-private val CACHE_TIME = 1
+private val CACHE_TIME = 1000L * 60L * 60L // one hour
 
 private val ClosedFloatingPointRange<Float>.span get() = endInclusive - start
 

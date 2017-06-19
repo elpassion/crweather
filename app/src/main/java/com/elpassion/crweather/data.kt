@@ -7,7 +7,7 @@ data class Chart(
         val inputRange: ClosedFloatingPointRange<Float>,
         val outputRange: ClosedFloatingPointRange<Float>,
         val lines: List<Line>,
-        val time: Float = System.currentTimeMillis().toFloat() / 1000
+        val timeMs: Long = currentTimeMs
 )
 
 data class Line(
