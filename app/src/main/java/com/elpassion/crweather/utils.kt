@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.support.annotation.ColorInt
 import android.support.annotation.LayoutRes
 import android.view.*
 import com.elpassion.crweather.OpenWeatherMapApi.DailyForecast
@@ -72,10 +73,10 @@ val List<DailyForecast>.tempChart: Chart get() {
             inputRange = first().dt.toFloat()..last().dt.toFloat(),
             outputRange = (minTemp ?: -30f) - 5f..(maxTemp ?: 70f) + 5f,
             lines = listOf(
-                    Line("Maximum temperature (\u2103C)", BLUE_LIGHT, toPoints { temp?.max }),
-                    Line("Minimum temperature (\u2103C)", BLACK_LIGHT, toPoints { temp?.min }),
-                    Line("Day temperature (\u2103C)", Color.BLUE, toPoints { temp?.day }),
-                    Line("Night temperature (\u2103C)", Color.BLACK, toPoints { temp?.night })
+                    Line("Maximum temperature (\u2103)", BLUE_LIGHT, toPoints { temp?.max }),
+                    Line("Minimum temperature (\u2103)", BLACK_LIGHT, toPoints { temp?.min }),
+                    Line("Day temperature (\u2103)", Color.BLUE, toPoints { temp?.day }),
+                    Line("Night temperature (\u2103)", Color.BLACK, toPoints { temp?.night })
             )
     )
 }
@@ -114,19 +115,25 @@ val List<DailyForecast>.windSpeedChart: Chart get() {
 }
 
 fun Map<String, List<Chart>>.getFreshCharts(city: String) = get(city)?.takeIf {
-    it.isNotEmpty() && it.first().time + CACHE_TIME > System.currentTimeMillis()
+    it.isNotEmpty() && it.first().time + CACHE_TIME > System.currentTimeMillis() / 1000
 }
 
-fun Canvas.drawStatus(status: String, paint: Paint = STATUS_PAINT) = drawText(status, 10f, 30f, paint)
+fun Canvas.drawStatus(status: String, x: Float = 4f, y: Float = 16f, @ColorInt color: Int = Color.BLACK) = drawText(status, x, y, STATUS_PAINT.withColor(color))
 
-fun Long.toTimeString() = String.format(Locale.US, "%tT", this)
+fun Float.toTimeString() = "%tT".format(this.toLong() * 1000)
+
+fun Float.toDateTimeString() = "%tF".format(this.toLong() * 1000)
+
+fun Float.toMeasurementString() = "%.2f".format(this)
 
 private val STATUS_PAINT = Paint().apply {
-    textSize = 22f
+    textSize = 12f
     isAntiAlias = true
 }
 
-private val CACHE_TIME = 1000 * 60 * 60 // one hour
+private fun Paint.withColor(@ColorInt acolor: Int) = Paint().also { it.set(this); it.color = acolor }
+
+private val CACHE_TIME = 1
 
 private val ClosedFloatingPointRange<Float>.span get() = endInclusive - start
 

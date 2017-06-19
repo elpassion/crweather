@@ -29,16 +29,23 @@ class ChartView @JvmOverloads constructor(
     private val buffer = ArrayList<Pair<Point, Point>>(200) // to avoid allocations in onDraw
 
     override fun onDraw(canvas: Canvas) {
-        // TODO: draw some legend, scale, lines names
-        canvas.drawStatus("time: ${chart.time.toTimeString()}")
-        for ((_, color, points) in chart.lines) {
+        val timeStart = chart.inputRange.start.toDateTimeString()
+        val timeEnd = chart.inputRange.endInclusive.toDateTimeString()
+        var textOffset = 16f
+        canvas.drawStatus("Forecasts $timeStart ... $timeEnd   Updated ${chart.time.toTimeString()}", 4f, textOffset)
+        textOffset += 16f
+        for ((name, color, points) in chart.lines) {
+            val valueStart = chart.outputRange.start.toMeasurementString()
+            val valueEnd = chart.outputRange.endInclusive.toMeasurementString()
+            canvas.drawStatus("$name  $valueStart ... $valueEnd", 4f, textOffset, color)
+            textOffset += 16f
             paint.color = color
             buffer.clear()
             points.changes(buffer)
             for ((begin, end) in buffer)
                 canvas.drawLine(begin.scale(chart.area, canvas.area) to end.scale(chart.area, canvas.area), paint)
             for (point in points)
-                canvas.drawCircle(point.scale(chart.area, canvas.area), 3f, paint)
+                canvas.drawCircle(point.scale(chart.area, canvas.area), 2f, paint)
         }
     }
 }
