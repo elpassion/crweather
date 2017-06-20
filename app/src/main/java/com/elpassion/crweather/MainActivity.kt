@@ -9,9 +9,9 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.MenuItem
-import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.navigation.*
@@ -59,21 +59,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         model.charts.observe(this, Observer { displayCharts(it ?: emptyList()) })
     }
 
-    private fun displayLoading(loading: Boolean) {
-        Log.w("CRW", "displaying loading: $loading")
-        progress.visibility = if (loading == true) View.VISIBLE else View.INVISIBLE
-    }
+    private fun displayLoading(loading: Boolean) { progress.visibility = if (loading) VISIBLE else INVISIBLE }
 
     private fun displayCity(city: String) {
-        Log.w("CRW", "displaying city: $city")
         title = city
-        for (item in navigation.menu) {
+        for (item in navigation.menu)
             item.isChecked = item.title == city
-        }
     }
 
-    private fun displayCharts(charts: List<Chart>) {
-        Log.w("CRW", "displaying charts:\n$charts")
-        adapter.charts = charts
-    }
+    private fun displayCharts(charts: List<Chart>) { adapter.charts = charts }
 }

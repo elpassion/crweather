@@ -8,7 +8,6 @@ object Repository {
 
     suspend fun getCityCharts(city: String): List<Chart> {
         val forecasts = getDailyForecastsByCity(city, 10, "metric").list?.toList() ?: return emptyList()
-        "getCityCharts($city)".println
         forecasts.size > 1 || return emptyList()
         return listOf(
                 forecasts.tempChart,

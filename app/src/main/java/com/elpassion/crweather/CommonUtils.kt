@@ -9,8 +9,6 @@ import kotlin.coroutines.experimental.suspendCoroutine
 
 @Suppress("unused") val Any?.unit get() = Unit
 
-val Any.println get() = println("CrWeather [$currentTimeString] $this")
-
 operator fun StringBuilder.plusAssign(string: String) = append(string).unit
 
 fun <T> List<T>.changes(destination: MutableList<Pair<T, T>> = ArrayList(size)): MutableList<Pair<T, T>> {
