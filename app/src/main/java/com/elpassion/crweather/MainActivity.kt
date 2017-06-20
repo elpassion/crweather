@@ -13,8 +13,8 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.navigation.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, LifecycleRegistryOwner {
 
@@ -30,22 +30,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer.addDrawerListener(toggle)
-        toggle.syncState()
+        drawer?.run {
+            val toggle = ActionBarDrawerToggle(this@MainActivity, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+            addDrawerListener(toggle)
+            toggle.syncState()
+        }
         navigation.setNavigationItemSelectedListener(this)
         recycler.adapter = adapter
         initModel()
     }
 
-    override fun onBackPressed() = if (drawer.isDrawerOpen(GravityCompat.START)) {
-        drawer.closeDrawer(GravityCompat.START)
-    } else {
-        super.onBackPressed()
-    }
+    override fun onBackPressed()
+            = drawer
+            ?.takeIf { it.isDrawerOpen(GravityCompat.START) }
+            ?.closeDrawer(GravityCompat.START)
+            ?: super.onBackPressed()
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        drawer.closeDrawer(GravityCompat.START)
+        drawer?.closeDrawer(GravityCompat.START)
         model.action(SelectCity(item.title.toString()))
         return true
     }

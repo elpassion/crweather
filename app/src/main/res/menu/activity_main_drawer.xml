@@ -3,21 +3,29 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_wroclaw"
             android:icon="@drawable/ic_location"
-            android:title="@string/wroclaw"/>
+            android:title="Wroclaw"/>
         <item
-            android:id="@+id/nav_warsaw"
             android:icon="@drawable/ic_location"
-            android:title="@string/warsaw"/>
+            android:title="Warsaw"/>
         <item
-            android:id="@+id/nav_london"
             android:icon="@drawable/ic_location"
-            android:title="@string/london"/>
+            android:title="Paris"/>
         <item
-            android:id="@+id/nav_new_york"
             android:icon="@drawable/ic_location"
-            android:title="@string/new_york"/>
+            android:title="London"/>
+        <item
+            android:icon="@drawable/ic_location"
+            android:title="New York"/>
+        <item
+            android:icon="@drawable/ic_location"
+            android:title="Concord"/>
+        <item
+            android:icon="@drawable/ic_location"
+            android:title="Vatican"/>
+        <item
+            android:icon="@drawable/ic_location"
+            android:title="Sosnowiec"/>
     </group>
 
 </menu>
