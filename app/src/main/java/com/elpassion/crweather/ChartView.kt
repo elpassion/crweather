@@ -1,8 +1,10 @@
 package com.elpassion.crweather
 
 import android.content.Context
-import android.graphics.Canvas
 import android.util.AttributeSet
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.channels.Channel
+import kotlinx.coroutines.experimental.channels.actor
 
 
 class ChartView @JvmOverloads constructor(
@@ -15,11 +17,12 @@ class ChartView @JvmOverloads constructor(
     var chart: Chart = Chart(0f..100f, 0f..100f, emptyList())
         set(value) {
             field = value
-            invalidate()
+            actor.offer(value)
         }
 
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-        canvas.drawChart(chart)
+    val actor = actor<Chart>(UI, Channel.CONFLATED) {
+        for (chart in this) {
+            draw { drawChart(chart) }
+        }
     }
 }
