@@ -16,7 +16,7 @@ open class CrView @JvmOverloads constructor(
         defStyleRes: Int = 0
 ) : View(context, attrs, defStyleAttr, defStyleRes) {
 
-    private var drawer: (Canvas.() -> Unit)? = null
+    private var drawer: Canvas.() -> Unit = {}
     private var continuation: Continuation<Unit>? = null
 
     suspend fun draw(drawer: Canvas.() -> Unit) {
@@ -27,8 +27,7 @@ open class CrView @JvmOverloads constructor(
 
     @CallSuper
     override fun onDraw(canvas: Canvas) {
-        drawer?.invoke(canvas)
-        drawer = null
+        drawer.invoke(canvas)
         continuation?.run { post { resume(Unit) } }
         continuation = null
     }
