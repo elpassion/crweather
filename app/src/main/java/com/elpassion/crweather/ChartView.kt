@@ -24,12 +24,13 @@ class ChartView @JvmOverloads constructor(
 
     val actor = actor<Chart>(UI, Channel.CONFLATED) {
         var currentChart = chart.deepCopy()
-        var currentVelocities = chart.deepCopy().stop()
+        var currentVelocities = chart.deepCopy().stopVelocities()
+        doOnDraw { drawChart(currentChart) }
         for (newChart in this) {
             currentChart = currentChart.copyAndReformat(newChart)
             currentVelocities = currentVelocities.copyAndReformat(newChart)
             while (isActive && isEmpty) {
-                draw { drawChart(currentChart) }
+                redraw()
                 delay(10)
                 currentChart.mutateOneStepTowards(destination = newChart, velocities = currentVelocities)
             }
@@ -38,7 +39,7 @@ class ChartView @JvmOverloads constructor(
 
     companion object {
 
-        private fun Chart.stop() = apply { lines.forEach { it.points.forEach { it.x = 0f; it.y = 0f } } }
+        private fun Chart.stopVelocities() = apply { lines.forEach { it.points.forEach { it.x = 0f; it.y = 0f } } }
 
         private fun Chart.mutateOneStepTowards(destination: Chart, velocities: Chart) {
             for ((lineIdx, line) in lines.withIndex())
@@ -47,12 +48,12 @@ class ChartView @JvmOverloads constructor(
                     val destinationPoint = destination.lines[lineIdx].points[pointIdx]
                     point.x += velocityPoint.x
                     point.y += velocityPoint.y
-                    velocityPoint.x = updateVelocity(velocityPoint.x, point.x, destinationPoint.x)
-                    velocityPoint.y = updateVelocity(velocityPoint.y, point.y, destinationPoint.y)
+                    velocityPoint.x = computeNewVelocity(velocityPoint.x, point.x, destinationPoint.x)
+                    velocityPoint.y = computeNewVelocity(velocityPoint.y, point.y, destinationPoint.y)
                 }
         }
 
-        private fun updateVelocity(velocity: Float, currentPosition: Float, destinationPosition: Float): Float {
+        private fun computeNewVelocity(velocity: Float, currentPosition: Float, destinationPosition: Float): Float {
             var newVelocity = velocity + (destinationPosition - currentPosition) / 20f
             if (signum(newVelocity) != signum(destinationPosition - currentPosition))
                 newVelocity = newVelocity / 1.5f

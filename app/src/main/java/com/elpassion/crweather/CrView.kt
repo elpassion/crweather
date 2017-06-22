@@ -19,10 +19,16 @@ open class CrView @JvmOverloads constructor(
     private var drawer: Canvas.() -> Unit = {}
     private var continuation: Continuation<Unit>? = null
 
-    suspend fun draw(drawer: Canvas.() -> Unit) {
-        this.drawer = drawer
+    fun doOnDraw(drawer: Canvas.() -> Unit) { this.drawer = drawer }
+
+    suspend fun redraw() {
         invalidate()
         suspendCoroutine<Unit> { continuation = it  }
+    }
+
+    suspend fun draw(drawer: Canvas.() -> Unit) {
+        doOnDraw(drawer)
+        redraw()
     }
 
     @CallSuper
