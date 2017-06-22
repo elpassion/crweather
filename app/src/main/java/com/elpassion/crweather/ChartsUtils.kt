@@ -20,7 +20,7 @@ val List<DailyForecast>.tempChart: Chart get() {
 
     return Chart(
             inputRange = first().dt.toFloat()..last().dt.toFloat(),
-            outputRange = (minTemp ?: -30f) - 5f..(maxTemp ?: 70f) + 5f,
+            outputRange = -10f..60f,
             lines = listOf(
                     Line("Maximum temperature (\u2103)", BLUE_LIGHT, toPoints { temp?.max }),
                     Line("Minimum temperature (\u2103)", BLACK_LIGHT, toPoints { temp?.min }),
@@ -39,7 +39,7 @@ val List<DailyForecast>.humidityAndCloudinessChart: Chart get() {
 
     return Chart(
             inputRange = first().dt.toFloat()..last().dt.toFloat(),
-            outputRange = -5f..105f,
+            outputRange = 0f..100f,
             lines = listOf(
                     Line("Humidity (%)", Color.GREEN, toPoints { humidity.takeIf { it != 0 }?.toFloat() }),
                     Line("Cloudiness (%)", Color.BLUE, toPoints { clouds.takeIf { it != 0 }?.toFloat() })
@@ -56,7 +56,7 @@ val List<DailyForecast>.windSpeedChart: Chart get() {
 
     return Chart(
             inputRange = first().dt.toFloat()..last().dt.toFloat(),
-            outputRange = (minWindSpeed ?: 0f) - 1f..(maxWindSpeed ?: 100f) + 1f,
+            outputRange = 0f..20f,
             lines = listOf(
                     Line("Wind speed (meter/s)", Color.DKGRAY, toPoints { speed })
             )
@@ -67,18 +67,9 @@ fun Map<String, List<Chart>>.getFreshCharts(city: String) = get(city)?.takeIf {
     it.isNotEmpty() && it.first().timeMs + CACHE_TIME > currentTimeMs
 }
 
-
-private val List<DailyForecast>.minTemp get() = map { it.temp?.min }.filterNotNull().min()
-
-private val List<DailyForecast>.maxTemp get() = map { it.temp?.max }.filterNotNull().max()
-
-private val List<DailyForecast>.minWindSpeed get() = map { it.speed }.filterNotNull().min()
-
-private val List<DailyForecast>.maxWindSpeed get() = map { it.speed }.filterNotNull().max()
-
+private fun List<DailyForecast>.toPoints(toValue: DailyForecast.() -> Float?)
+        = map { it.toPointOrNull(toValue) }.filterNotNull()
 
 private fun DailyForecast.toPointOrNull(toValue: DailyForecast.() -> Float?)
         = toValue()?.let { Point(dt.toFloat(), it) }
 
-private fun List<DailyForecast>.toPoints(toValue: DailyForecast.() -> Float?)
-        = map { it.toPointOrNull(toValue) }.filterNotNull()

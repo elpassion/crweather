@@ -16,7 +16,7 @@ data class Line(
         val points: List<Point>
 )
 
-data class Point(val x: Float, val y: Float)
+data class Point(var x: Float, var y: Float)
 
 sealed class Action
 
