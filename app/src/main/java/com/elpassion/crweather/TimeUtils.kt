@@ -6,6 +6,6 @@ val currentTimeString get() = "%tT".format(currentTimeMs)
 
 val Long.asTimeString get() = "%tT".format(this)
 
-val Long.asDateString get() = "%tF".format(this)
+val Long.asDateString get() = "%1\$tm-%1\$td".format(this)
 
 val Float.asTimeMs get() = toLong() * 1000

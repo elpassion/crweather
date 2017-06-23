@@ -8,9 +8,11 @@ fun Point.scale(from: RectF, to: RectF) = Point(
         y.scale(from.top..from.bottom, to.top..to.bottom)
 )
 
-val Canvas.area get() = com.elpassion.crweather.area(widthRange, heightRange)
+val Canvas.area get() = area(widthRange, heightRange)
 
-val Chart.area get() = com.elpassion.crweather.area(inputRange, outputRange.flip())
+val Chart.area get() = area(inputRange, outputRange.flip())
+
+fun ClosedFloatingPointRange<Float>.portion(portion: Float) = portion.scale(0f..1f, this)
 
 private val ClosedFloatingPointRange<Float>.span get() = endInclusive - start
 

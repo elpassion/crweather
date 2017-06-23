@@ -10,7 +10,7 @@ private val BLUE_LIGHT = 0x220000FF
 private val BLACK_LIGHT = 0x22000000
 
 
-val Float.asMeasurementString get() = "%.2f".format(this)
+val Float.asMeasurementString get() = "%.1f".format(this)
 
 /**
  * WARNING: The list has to have at least two forecasts
@@ -21,7 +21,7 @@ val List<DailyForecast>.tempChart: Chart get() {
 
     return Chart(
             inputRange = first().dt.toFloat()..last().dt.toFloat(),
-            outputRange = -10f..60f,
+            outputRange = 0f..40f,
             lines = listOf(
                     Line("Maximum temperature (\u2103)", BLUE_LIGHT, toPoints { temp?.max }),
                     Line("Minimum temperature (\u2103)", BLACK_LIGHT, toPoints { temp?.min }),
@@ -57,7 +57,7 @@ val List<DailyForecast>.windSpeedChart: Chart get() {
 
     return Chart(
             inputRange = first().dt.toFloat()..last().dt.toFloat(),
-            outputRange = 0f..20f,
+            outputRange = 0f..15f,
             lines = listOf(
                     Line("Wind speed (meter/s)", Color.DKGRAY, toPoints { speed })
             )
@@ -100,7 +100,7 @@ private fun updateVelocity(velocity: Float, currentPosition: Float, destinationP
     return newVelocity
 }
 
-fun Chart.copyAndReformat(model: Chart, defaultPoint: Point) = Chart(model.inputRange, model.outputRange, lines.copyAndReformatLines(model.lines, defaultPoint), model.timeMs)
+fun Chart.copyAndReformat(model: Chart, defaultNewPoint: Point) = Chart(model.inputRange, model.outputRange, lines.copyAndReformatLines(model.lines, defaultNewPoint), model.timeMs)
 
 private fun List<Line>.copyAndReformatLines(model: List<Line>, defaultPoint: Point) = List(model.size) { idx ->
     getOrElse(idx) { model[idx] }.copyAndReformat(model[idx], defaultPoint)
@@ -112,6 +112,5 @@ private fun List<Point>.copyAndReformatPoints(model: List<Point>, defaultPoint: 
     getOrElse(idx) { defaultPoint }.copy()
 }
 
-val Chart.pointAtTheEnd get() = Point(inputRange.endInclusive, outputRange.center)
+val Chart.pointAtTheEnd get() = Point(inputRange.endInclusive, outputRange.portion(.5f))
 
-private val ClosedFloatingPointRange<Float>.center get() = (endInclusive - start) / 2
