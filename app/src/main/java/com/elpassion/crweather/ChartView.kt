@@ -30,9 +30,8 @@ class ChartView @JvmOverloads constructor(
 
         for (destinationChart in this) {
 
-            currentChart = currentChart.copyAndReformat(destinationChart)
-            currentVelocities = currentVelocities.copyAndReformat(destinationChart)
-
+            currentChart = currentChart.copyAndReformat(destinationChart, defaultPoint = destinationChart.pointAtTheEnd)
+            currentVelocities = currentVelocities.copyAndReformat(destinationChart, defaultPoint = Point(0f, 0f))
             while (isActive && isEmpty) {
                 redraw()
                 delay(10)

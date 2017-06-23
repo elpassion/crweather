@@ -100,14 +100,18 @@ private fun updateVelocity(velocity: Float, currentPosition: Float, destinationP
     return newVelocity
 }
 
-fun Chart.copyAndReformat(model: Chart) = Chart(model.inputRange, model.outputRange, lines.copyAndReformatLines(model.lines), model.timeMs)
+fun Chart.copyAndReformat(model: Chart, defaultPoint: Point) = Chart(model.inputRange, model.outputRange, lines.copyAndReformatLines(model.lines, defaultPoint), model.timeMs)
 
-private fun List<Line>.copyAndReformatLines(model: List<Line>) = MutableList(model.size) { idx ->
-    getOrElse(idx) { model[idx] }.copyAndReformat(model[idx])
+private fun List<Line>.copyAndReformatLines(model: List<Line>, defaultPoint: Point) = List(model.size) { idx ->
+    getOrElse(idx) { model[idx] }.copyAndReformat(model[idx], defaultPoint)
 }
 
-private fun Line.copyAndReformat(model: Line) = Line(model.name, model.color, points.copyAndReformatPoints(model.points))
+private fun Line.copyAndReformat(model: Line, defaultPoint: Point) = Line(model.name, model.color, points.copyAndReformatPoints(model.points, defaultPoint))
 
-private fun List<Point>.copyAndReformatPoints(model: List<Point>) = MutableList(model.size) { idx ->
-    getOrElse(idx) { model[idx] }.copy()
+private fun List<Point>.copyAndReformatPoints(model: List<Point>, defaultPoint: Point) = List(model.size) { idx ->
+    getOrElse(idx) { defaultPoint }.copy()
 }
+
+val Chart.pointAtTheEnd get() = Point(inputRange.endInclusive, outputRange.center)
+
+private val ClosedFloatingPointRange<Float>.center get() = (endInclusive - start) / 2
