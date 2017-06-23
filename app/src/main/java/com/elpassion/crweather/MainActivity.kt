@@ -5,18 +5,15 @@ import android.arch.lifecycle.LifecycleRegistryOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.view.MenuItem
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.navigation.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, LifecycleRegistryOwner {
+class MainActivity : AppCompatActivity(), LifecycleRegistryOwner {
 
     val registry = LifecycleRegistry(this)
 
@@ -35,21 +32,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             addDrawerListener(toggle)
             toggle.syncState()
         }
-        navigation.setNavigationItemSelectedListener(this)
+        navigation.setNavigationItemSelectedListener { model.action(SelectCity(it.title.toString())) }
         recycler.adapter = adapter
         initModel()
-    }
-
-    override fun onBackPressed()
-            = drawer
-            ?.takeIf { it.isDrawerOpen(GravityCompat.START) }
-            ?.closeDrawer(GravityCompat.START)
-            ?: super.onBackPressed()
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        drawer?.closeDrawer(GravityCompat.START)
-        model.action(SelectCity(item.title.toString()))
-        return true
     }
 
     private fun initModel() {

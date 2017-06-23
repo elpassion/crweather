@@ -33,7 +33,7 @@ class MainModel : ViewModel() {
 
     init { action(SelectCity("Warsaw")) }
 
-    fun action(action: Action) = actor.offer(action).unit
+    fun action(action: Action) = actor.offer(action)
 
     override fun onCleared() = actor.cancel().unit
 
