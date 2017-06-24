@@ -10,7 +10,7 @@ private val BLUE_LIGHT = 0x220000FF
 private val BLACK_LIGHT = 0x22000000
 
 
-val Float.asMeasurementString get() = "%.1f".format(this)
+val Float.asMeasurementString get() = "%.0f".format(this)
 
 /**
  * WARNING: The list has to have at least two forecasts
