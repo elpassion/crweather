@@ -64,6 +64,39 @@ val List<DailyForecast>.windSpeedChart: Chart get() {
     )
 }
 
+/**
+ * WARNING: The list has to have at least two forecasts
+ */
+val List<DailyForecast>.pressureChart: Chart get() {
+
+    require(size > 1) { "Can not create a chart with less then two measurements" } // maybe: return some chart for just one measurement?
+
+    return Chart(
+            inputRange = first().dt.toFloat()..last().dt.toFloat(),
+            outputRange = 950f..1050f,
+            lines = listOf(
+                    Line("Pressure (hPa)", Color.RED, toPoints { pressure })
+            )
+    )
+}
+
+/**
+ * WARNING: The list has to have at least two forecasts
+ */
+val List<DailyForecast>.rainAndSnowChart: Chart get() {
+
+    require(size > 1) { "Can not create a chart with less then two measurements" } // maybe: return some chart for just one measurement?
+
+    return Chart(
+            inputRange = first().dt.toFloat()..last().dt.toFloat(),
+            outputRange = 0f..100f,
+            lines = listOf(
+                    Line("Rain (%)", Color.BLUE, toPoints { rain }),
+                    Line("Snow (%)", Color.CYAN, toPoints { snow })
+            )
+    )
+}
+
 fun Map<String, List<Chart>>.getFreshCharts(city: String) = get(city)?.takeIf {
     it.isNotEmpty() && it.first().timeMs + CACHE_TIME > currentTimeMs
 }

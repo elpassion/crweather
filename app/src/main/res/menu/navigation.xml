@@ -26,6 +26,9 @@
         <item
             android:icon="@drawable/ic_location"
             android:title="Sosnowiec"/>
+        <item
+            android:icon="@drawable/ic_location"
+            android:title="Alta"/>
     </group>
 
 </menu>

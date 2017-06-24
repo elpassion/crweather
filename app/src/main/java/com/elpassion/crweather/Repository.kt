@@ -12,7 +12,9 @@ object Repository {
         return listOf(
                 forecasts.tempChart,
                 forecasts.humidityAndCloudinessChart,
-                forecasts.windSpeedChart
+                forecasts.windSpeedChart,
+                forecasts.pressureChart,
+                forecasts.rainAndSnowChart
         )
         // TODO: more charts? use all private functions from below?
     }
