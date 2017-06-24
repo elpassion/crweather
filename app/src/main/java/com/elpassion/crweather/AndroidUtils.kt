@@ -1,5 +1,6 @@
 package com.elpassion.crweather
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -8,6 +9,7 @@ import android.support.annotation.ColorInt
 import android.support.annotation.LayoutRes
 import android.view.Menu
 import android.view.ViewGroup
+import android.widget.Toast
 
 private val CHART_PAINT = Paint().apply {
     style = Paint.Style.STROKE
@@ -90,3 +92,5 @@ private fun Canvas.drawBoundaries(rect: RectF, paint: Paint = AXES_PAINT, left: 
 
 private fun Paint.withColor(@ColorInt acolor: Int)
         = Paint().also { it.set(this); it.color = acolor }
+
+fun Context.toast(message: CharSequence) { Toast.makeText(this, message, Toast.LENGTH_SHORT).show() }

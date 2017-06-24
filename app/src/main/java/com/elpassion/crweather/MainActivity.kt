@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity(), LifecycleRegistryOwner {
         model.loading.observe(this, Observer { displayLoading(it ?: false) })
         model.city.observe(this, Observer { displayCity(it ?: "") })
         model.charts.observe(this, Observer { displayCharts(it ?: emptyList()) })
+        model.message.observe(this, Observer { displayMessage(it ?: "") })
     }
 
     private fun displayLoading(loading: Boolean) { progress.visibility = if (loading) VISIBLE else INVISIBLE }
@@ -53,4 +54,8 @@ class MainActivity : AppCompatActivity(), LifecycleRegistryOwner {
     }
 
     private fun displayCharts(charts: List<Chart>) { adapter.charts = charts }
+
+    private fun displayMessage(message: String) {
+        if (message.isNotBlank()) toast(message)
+    }
 }

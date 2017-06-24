@@ -17,6 +17,9 @@ fun <T> List<T>.changes(destination: MutableList<Pair<T, T>> = ArrayList(size)):
     return destination
 }
 
+/**
+ * @throws IllegalStateException
+ */
 suspend fun <T> Call<T>.await(): T = suspendCoroutine { continuation ->
 
     val callback = object : Callback<T> {

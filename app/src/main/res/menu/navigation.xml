@@ -29,6 +29,9 @@
         <item
             android:icon="@drawable/ic_location"
             android:title="Alta"/>
+        <item
+            android:icon="@drawable/ic_location"
+            android:title="Bad City, xxx"/>
     </group>
 
 </menu>
