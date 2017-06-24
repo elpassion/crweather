@@ -25,7 +25,7 @@ private val AXES_PAINT = Paint().apply {
 }
 
 private val TEXT_PAINT = Paint().apply {
-    style = Paint.Style.FILL
+    style = Paint.Style.FILL_AND_STROKE
     strokeWidth = 1f
     isAntiAlias = true
     textSize = 16f
