@@ -21,6 +21,13 @@ private val AXES_PAINT = Paint().apply {
     style = Paint.Style.STROKE
     strokeWidth = 1f
     isAntiAlias = true
+    color = Color.GRAY
+}
+
+private val TEXT_PAINT = Paint().apply {
+    style = Paint.Style.FILL
+    strokeWidth = 1f
+    isAntiAlias = true
     textSize = 16f
     textAlign = Paint.Align.CENTER
     color = Color.GRAY
@@ -62,18 +69,18 @@ private fun Canvas.drawChartAxes(chart: Chart) {
     for (portion in (0 .. 100 step 20).map { it / 100f }) {
         val value = chart.outputRange.portion(portion).asMeasurementString
         val time = chart.inputRange.portion(portion).asTimeMs.asDateString
-        drawText(time, axesArea.horizontalRange.portion(portion), axesArea.bottom + TEXT_LINE_HEIGHT + 4f, AXES_PAINT)
-        drawText(value, 26f, axesArea.verticalRange.portion(1f - portion), AXES_PAINT)
+        drawText(time, axesArea.horizontalRange.portion(portion), axesArea.bottom + TEXT_LINE_HEIGHT + 4f, TEXT_PAINT)
+        drawText(value, 26f, axesArea.verticalRange.portion(1f - portion), TEXT_PAINT)
     }
 }
 
 fun Canvas.drawChartLegend(chart: Chart) {
     var textPosX = area.horizontalRange.portion(.9f)
     var textPosY = TEXT_LINE_HEIGHT
-    drawText("Forecasts - Updated ${chart.timeMs.asTimeString}", textPosX, textPosY, AXES_PAINT)
+    drawText("Forecasts - Updated ${chart.timeMs.asTimeString}", textPosX, textPosY, TEXT_PAINT)
     textPosY += TEXT_LINE_HEIGHT
     for ((name, color, _) in chart.lines) {
-        drawText(name, textPosX, textPosY, AXES_PAINT.withColor(color))
+        drawText(name, textPosX, textPosY, TEXT_PAINT.withColor(color))
         textPosY += TEXT_LINE_HEIGHT
     }
 
