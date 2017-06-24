@@ -35,28 +35,21 @@ fun ViewGroup.inflate(@LayoutRes layoutId: Int, attachToRoot: Boolean = false): 
     return inflater.inflate(layoutId, this, attachToRoot)
 }
 
-fun Canvas.drawCircle(point: Point, radius: Float, paint: android.graphics.Paint)
+fun Canvas.drawCircle(point: Point, radius: Float, paint: Paint)
         = drawCircle(point.x, point.y, radius, paint)
 
-fun Canvas.drawLine(points: Pair<Point, Point>, paint: android.graphics.Paint)
+fun Canvas.drawLine(points: Pair<Point, Point>, paint: Paint)
         = drawLine(points.first.x, points.first.y, points.second.x, points.second.y, paint)
 
-fun Canvas.drawChart(chart: Chart, paint: Paint = CHART_PAINT) {
+fun Canvas.drawChart(chart: Chart) {
     drawChartAxes(chart)
-    var textPosX = area.horizontalRange.portion(.9f)
-    var textPosY = 16f
-    drawText("Forecasts - Updated ${chart.timeMs.asTimeString}", textPosX, textPosY, AXES_PAINT)
-    textPosY += 16f
-    for ((name, color, points) in chart.lines) {
-        drawText(name, textPosX, textPosY, AXES_PAINT.withColor(color))
-        textPosY += 16f
-        paint.color = color
+    drawChartLegend(chart)
+    for ((_, color, points) in chart.lines) {
         for ((begin, end) in points.changes())
-            drawLine(begin.scale(chart.area, insetArea) to end.scale(chart.area, insetArea), paint)
+            drawLine(begin.scale(chart.area, insetArea) to end.scale(chart.area, insetArea), CHART_PAINT.withColor(color))
         for (point in points)
-            drawCircle(point.scale(chart.area, insetArea), 2f, paint)
+            drawCircle(point.scale(chart.area, insetArea), 2f, CHART_PAINT.withColor(color))
     }
-
 }
 
 private fun Canvas.drawChartAxes(chart: Chart) {
@@ -68,6 +61,18 @@ private fun Canvas.drawChartAxes(chart: Chart) {
         drawText(time, axesArea.horizontalRange.portion(portion), axesArea.bottom + 20f, AXES_PAINT)
         drawText(value, 20f, axesArea.verticalRange.portion(1f - portion), AXES_PAINT)
     }
+}
+
+fun Canvas.drawChartLegend(chart: Chart) {
+    var textPosX = area.horizontalRange.portion(.9f)
+    var textPosY = 16f
+    drawText("Forecasts - Updated ${chart.timeMs.asTimeString}", textPosX, textPosY, AXES_PAINT)
+    textPosY += 16f
+    for ((name, color, _) in chart.lines) {
+        drawText(name, textPosX, textPosY, AXES_PAINT.withColor(color))
+        textPosY += 16f
+    }
+
 }
 
 private val Canvas.insetArea get() = area.apply { inset(40f, 40f) }
@@ -83,5 +88,5 @@ private fun Canvas.drawBoundaries(rect: RectF, paint: Paint = AXES_PAINT, left: 
     if (bottom) drawLine(rect.left, rect.bottom, rect.right, rect.bottom, paint)
 }
 
-private fun android.graphics.Paint.withColor(@ColorInt acolor: Int)
-        = android.graphics.Paint().also { it.set(this); it.color = acolor }
+private fun Paint.withColor(@ColorInt acolor: Int)
+        = Paint().also { it.set(this); it.color = acolor }
