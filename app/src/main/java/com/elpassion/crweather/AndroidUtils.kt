@@ -77,13 +77,11 @@ private fun Canvas.drawChartAxes(chart: Chart) {
 fun Canvas.drawChartLegend(chart: Chart) {
     var textPosX = area.horizontalRange.portion(.9f)
     var textPosY = TEXT_LINE_HEIGHT
-    drawText("Forecasts - Updated ${chart.timeMs.asTimeString}", textPosX, textPosY, TEXT_PAINT)
-    textPosY += TEXT_LINE_HEIGHT
+    drawText("Updated at ${chart.timeMs.asTimeString}", textPosX, textPosY, TEXT_PAINT)
     for ((name, color, _) in chart.lines) {
-        drawText(name, textPosX, textPosY, TEXT_PAINT.withColor(color))
         textPosY += TEXT_LINE_HEIGHT
+        drawText(name, textPosX, textPosY, TEXT_PAINT.withColor(color))
     }
-
 }
 
 private val Canvas.insetArea get() = area.apply { inset(50f, 40f) }

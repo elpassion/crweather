@@ -36,7 +36,7 @@ class ChartView @JvmOverloads constructor(
             while (isActive && isEmpty) {
                 currentChart.moveABitTo(destinationChart, currentVelocities)
                 redraw()
-                delay(10)
+                delay(16)
             }
         }
     }
