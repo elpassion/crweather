@@ -22,7 +22,7 @@ class MainModel : ViewModel() {
     val loading: LiveData<Boolean> = loading_
     val message: LiveData<String> = message_
 
-    val actor = actor<Action>(UI, Channel.CONFLATED) {
+    private val actor = actor<Action>(UI, Channel.CONFLATED) {
         for (action in this) when (action) {
             is SelectCity -> {
                 city_.value = action.city

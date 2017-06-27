@@ -21,7 +21,7 @@ class ChartView @JvmOverloads constructor(
             actor.offer(value)
         }
 
-    val actor = actor<Chart>(UI, Channel.CONFLATED) {
+    private val actor = actor<Chart>(UI, Channel.CONFLATED) {
 
         var currentChart = chart.deepCopy()
         var currentVelocities = chart.deepCopy().resetPoints()

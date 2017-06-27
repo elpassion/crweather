@@ -9,12 +9,12 @@ kotlin {
 }
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.elpassion.crweather"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -32,24 +32,24 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version"
-    compile "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
-    compile "com.android.support:appcompat-v7:$android_support_version"
-    compile "com.android.support:support-v4:$android_support_version"
-    compile "com.android.support:design:$android_support_version"
-    compile "com.android.support:recyclerview-v7:$android_support_version"
-    compile "com.android.support:cardview-v7:$android_support_version"
-    compile "com.android.support.constraint:constraint-layout:$constraint_layout_version"
-    compile "android.arch.lifecycle:runtime:$android_arch_version"
-    compile "android.arch.lifecycle:extensions:$android_arch_version"
-    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
-    compile "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    compile "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
+    api "com.android.support:appcompat-v7:$android_support_version"
+    api "com.android.support:support-v4:$android_support_version"
+    api "com.android.support:design:$android_support_version"
+    api "com.android.support:recyclerview-v7:$android_support_version"
+    api "com.android.support:cardview-v7:$android_support_version"
+    api "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+    api "android.arch.lifecycle:runtime:$android_arch_version"
+    api "android.arch.lifecycle:extensions:$android_arch_version"
+    api "com.squareup.retrofit2:retrofit:$retrofit_version"
+    api "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    api "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     annotationProcessor "android.arch.lifecycle:compiler:$android_arch_version"
-    testCompile "junit:junit:$junit_version"
-    androidTestCompile("com.android.support.test.espresso:espresso-core:$espresso_version", {
+    testApi "junit:junit:$junit_version"
+    androidTestApi("com.android.support.test.espresso:espresso-core:$espresso_version", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }
