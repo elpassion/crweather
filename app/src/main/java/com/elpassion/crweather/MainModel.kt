@@ -12,28 +12,28 @@ class MainModel : ViewModel() {
 
     private val cache = HashMap<String, List<Chart>>(10)
 
-    private val city_ = MutableLiveData<String>().apply { value = "" }
-    private val charts_ = MutableLiveData<List<Chart>>().apply { value = emptyList() }
-    private val loading_ = MutableLiveData<Boolean>().apply { value = false }
-    private val message_ = MutableLiveData<String>()
+    private val mutableCity = MutableLiveData<String>().apply { value = "" }
+    private val mutableCharts = MutableLiveData<List<Chart>>().apply { value = emptyList() }
+    private val mutableLoading = MutableLiveData<Boolean>().apply { value = false }
+    private val mutableMessage = MutableLiveData<String>()
 
-    val city: LiveData<String> = city_
-    val charts: LiveData<List<Chart>> = charts_
-    val loading: LiveData<Boolean> = loading_
-    val message: LiveData<String> = message_
+    val city: LiveData<String> = mutableCity
+    val charts: LiveData<List<Chart>> = mutableCharts
+    val loading: LiveData<Boolean> = mutableLoading
+    val message: LiveData<String> = mutableMessage
 
     private val actor = actor<Action>(UI, Channel.CONFLATED) {
         for (action in this) when (action) {
             is SelectCity -> {
-                city_.value = action.city
-                loading_.value = true
+                mutableCity.value = action.city
+                mutableLoading.value = true
                 try {
-                    charts_.value = cache.getFreshCharts(action.city) ?: getNewCharts(action.city)
+                    mutableCharts.value = cache.getFreshCharts(action.city) ?: getNewCharts(action.city)
                 }
                 catch (e: Exception) {
-                    message_.value = e.toString()
+                    mutableMessage.value = e.toString()
                 }
-                loading_.value = false
+                mutableLoading.value = false
             }
         }
     }
