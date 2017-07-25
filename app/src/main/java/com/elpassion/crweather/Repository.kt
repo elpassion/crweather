@@ -5,7 +5,6 @@ object Repository {
 
     internal val appid = "f08f5bce8d0fe0c0903f145a88d773f8"
 
-
     /**
      * @throws IllegalStateException
      */
@@ -22,13 +21,13 @@ object Repository {
         // TODO: more charts? use all private functions from below?
     }
 
-
     /**
      * @param city City name + optional country code after comma
      * @param units Default (null) means in Kelvin, "metric" means in Celsius, "imperial" means in Fahrenheit
      * @throws IllegalStateException
      */
-    private suspend fun getForecastByCity(city: String, units: String? = null): OpenWeatherMapApi.Forecast
+    private suspend fun getForecastByCity(city: String, units: String? = null)
+            : OpenWeatherMapApi.Forecast
             = OpenWeatherMapApi.service.getForecastByCity(appid, city, units).await()
 
     /**
@@ -38,7 +37,8 @@ object Repository {
      * @param units Default (null) means in Kelvin, "metric" means in Celsius, "imperial" means in Fahrenheit
      * @throws IllegalStateException
      */
-    private suspend fun getForecastsByCity(city: String, cnt: Long? = null, units: String? = null): OpenWeatherMapApi.Forecasts
+    private suspend fun getForecastsByCity(city: String, cnt: Long? = null, units: String? = null)
+            : OpenWeatherMapApi.Forecasts
             = OpenWeatherMapApi.service.getForecastsByCity(appid, city, cnt, units).await()
 
     /**
@@ -48,7 +48,7 @@ object Repository {
      * @param units Default (null) means in Kelvin, "metric" means in Celsius, "imperial" means in Fahrenheit
      * @throws IllegalStateException
      */
-    private suspend fun getDailyForecastsByCity(city: String, cnt: Long? = null, units: String? = null): OpenWeatherMapApi.DailyForecasts
+    private suspend fun getDailyForecastsByCity(city: String, cnt: Long? = null, units: String? = null)
+            : OpenWeatherMapApi.DailyForecasts
             = OpenWeatherMapApi.service.getDailyForecastsByCity(appid, city, cnt, units).await()
-
 }

@@ -7,7 +7,6 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.Channel
 import kotlinx.coroutines.experimental.channels.actor
 
-
 class MainModel : ViewModel() {
 
     private val cache = HashMap<String, List<Chart>>(10)
@@ -29,8 +28,7 @@ class MainModel : ViewModel() {
                 mutableLoading.value = true
                 try {
                     mutableCharts.value = cache.getFreshCharts(action.city) ?: getNewCharts(action.city)
-                }
-                catch (e: Exception) {
+                } catch (e: Exception) {
                     mutableMessage.value = e.toString()
                 }
                 mutableLoading.value = false
@@ -47,6 +45,7 @@ class MainModel : ViewModel() {
     /**
      * @throws IllegalStateException
      */
-    private suspend fun getNewCharts(city: String) = Repository.getCityCharts(city).also { cache[city] = it }
+    private suspend fun getNewCharts(city: String)
+            = Repository.getCityCharts(city).also { cache[city] = it }
 }
 

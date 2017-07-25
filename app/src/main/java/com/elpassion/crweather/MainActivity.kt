@@ -21,14 +21,16 @@ class MainActivity : AppCompatActivity(), LifecycleRegistryOwner {
 
     lateinit var model: MainModel
 
-    override fun getLifecycle() = registry // can not use LifecycleActivity (it does not have setSupportActionBar)
+    // can not use LifecycleActivity (it does not have setSupportActionBar)
+    override fun getLifecycle() = registry
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         drawer?.run {
-            val toggle = ActionBarDrawerToggle(this@MainActivity, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+            val toggle = ActionBarDrawerToggle(this@MainActivity, drawer, toolbar,
+                    R.string.navigation_drawer_open, R.string.navigation_drawer_close)
             addDrawerListener(toggle)
             toggle.syncState()
         }
@@ -45,7 +47,9 @@ class MainActivity : AppCompatActivity(), LifecycleRegistryOwner {
         model.message.observe(this, Observer { displayMessage(it ?: "") })
     }
 
-    private fun displayLoading(loading: Boolean) { progress.visibility = if (loading) VISIBLE else INVISIBLE }
+    private fun displayLoading(loading: Boolean) {
+        progress.visibility = if (loading) VISIBLE else INVISIBLE
+    }
 
     private fun displayCity(city: String) {
         title = city

@@ -11,7 +11,8 @@ import kotlin.coroutines.experimental.suspendCoroutine
 
 operator fun StringBuilder.plusAssign(string: String) = append(string).unit
 
-fun <T> List<T>.changes(destination: MutableList<Pair<T, T>> = ArrayList(size)): MutableList<Pair<T, T>> {
+fun <T> List<T>.changes(destination: MutableList<Pair<T, T>> = ArrayList(size))
+        : MutableList<Pair<T, T>> {
     for (i in 0..size - 2)
         destination += get(i) to get(i + 1)
     return destination
@@ -24,7 +25,8 @@ suspend fun <T> Call<T>.await(): T = suspendCoroutine { continuation ->
 
     val callback = object : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) = continuation.resumeWithException(t)
-        override fun onResponse(call: Call<T>, response: Response<T>) = continuation.resumeNormallyOrWithException {
+        override fun onResponse(call: Call<T>, response: Response<T>)
+                = continuation.resumeNormallyOrWithException {
             response.isSuccessful || throw IllegalStateException("Http error ${response.code()}")
             response.body() ?: throw IllegalStateException("Response body is null")
         }

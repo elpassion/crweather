@@ -1,7 +1,5 @@
 package com.elpassion.crweather
 
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -16,14 +14,12 @@ object OpenWeatherMapApi {
         /** Cloudiness, % */
         var all: Int = 0
     }
-
     class Coord {
         /** Latitude */
         var lat: Float = 0f
         /** Longitude */
         var lon: Float = 0f
     }
-
     class City {
         /** City id as in [http://bulk.openweathermap.org/sample/] */
         var id: Long = 0
@@ -36,21 +32,18 @@ object OpenWeatherMapApi {
         /** City population */
         var population: Long = 0
     }
-
     class Wind {
         /** Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour. */
         var speed: Float = 0f
         /** Wind direction, degrees (meteorological) */
         var deg: Float = 0f
     }
-
     class Sys {
         var message: Float = 0f
         var country: String? = null
         var sunrise: Long = 0
         var sunset: Long = 0
     }
-
     class Weather {
         /** Weather condition id */
         var id: Int = 0
@@ -61,7 +54,6 @@ object OpenWeatherMapApi {
         /** Group of weather parameters (Rain, Snow, Extreme, etc.) */
         var main: String? = null
     }
-
     class Main {
         /** Humidity, % */
         var humidity: Int = 0
@@ -86,7 +78,6 @@ object OpenWeatherMapApi {
         /** Atmospheric pressure on the ground level, hPa */
         var grnd_level: Float = 0f
     }
-
     class Temp {
         /** Min daily temperature. Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit. */
         var min: Float = 0f
@@ -101,7 +92,6 @@ object OpenWeatherMapApi {
         /** Morning temperature. Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit. */
         var morn: Float = 0f
     }
-
     class Forecast {
         var id: Long = 0
         /** Time of data forecasted, unix, UTC */
@@ -122,7 +112,6 @@ object OpenWeatherMapApi {
         /** Main conditions */
         var main: Main? = null
     }
-
     class DailyForecast {
         /** Time of data forecasted, unix, UTC */
         var dt: Long = 0
@@ -145,7 +134,6 @@ object OpenWeatherMapApi {
         /** Snow */
         var snow: Float = 0f
     }
-
     class Forecasts {
         /** City information */
         var city: City? = null
@@ -158,7 +146,6 @@ object OpenWeatherMapApi {
         /** Array of forecasts */
         var list: Array<Forecast>? = null
     }
-
     class DailyForecasts {
         /** City information */
         var city: City? = null
@@ -211,17 +198,10 @@ object OpenWeatherMapApi {
                 @Query("units") units: String? = null): Call<DailyForecasts>
     }
 
-    private val interceptor = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
-
-    private val logclient = OkHttpClient.Builder().addInterceptor(interceptor).build()
-
     private val retrofit = Retrofit.Builder()
             .baseUrl(URL)
-//            .client(logclient)
             .addConverterFactory(MoshiConverterFactory.create()).build()
 
     val service = retrofit.create(Service::class.java)!!
-
-
 }
 
