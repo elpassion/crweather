@@ -22,8 +22,9 @@ open class CrView @JvmOverloads constructor(
     fun doOnDraw(drawer: Canvas.() -> Unit) { this.drawer = drawer }
 
     suspend fun redraw() {
+        require(continuation === null) { "Redrawing is already in progress." }
         invalidate()
-        suspendCoroutine<Unit> { continuation = it  }
+        suspendCoroutine<Unit> { continuation = it }
     }
 
     suspend fun draw(drawer: Canvas.() -> Unit) {
