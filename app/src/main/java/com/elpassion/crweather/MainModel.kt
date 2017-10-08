@@ -45,7 +45,8 @@ class MainModel : ViewModel() {
     /**
      * @throws IllegalStateException
      */
-    private suspend fun getNewCharts(city: String)
-            = Repository.getCityCharts(city).also { cache[city] = it }
+    private suspend fun getNewCharts(city: String) = retryWithTimeouts(200, 400, 800) {
+        Repository.getCityCharts(city).also { cache[city] = it }
+    }
 }
 
