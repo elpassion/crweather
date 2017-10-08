@@ -2,7 +2,7 @@
 
 buildscript {
     ext.kotlin_version = '1.1.51'
-    ext.kotlinx_coroutines_version = '0.16'
+    ext.kotlinx_coroutines_version = '0.19.1'
     ext.android_arch_version = '1.0.0-alpha9-1'
     ext.android_support_version = '26.1.0'
     ext.retrofit_version = '2.3.0'

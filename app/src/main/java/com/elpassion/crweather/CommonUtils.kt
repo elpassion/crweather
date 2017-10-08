@@ -1,7 +1,12 @@
 package com.elpassion.crweather
 
-import kotlinx.coroutines.experimental.*
-import retrofit2.*
+import kotlinx.coroutines.experimental.CancellableContinuation
+import kotlinx.coroutines.experimental.CancellationException
+import kotlinx.coroutines.experimental.suspendCancellableCoroutine
+import kotlinx.coroutines.experimental.withTimeout
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 @Suppress("unused") val Any?.unit get() = Unit
@@ -40,14 +45,10 @@ private inline fun <T> CancellableContinuation<T>.tryToResume(getter: () -> T) {
 }
 
 suspend fun <T> retryWithTimeouts(vararg timeouts: Long, block: suspend () -> T): T {
-    var result: T? = null
     var exception: CancellationException? = null
     timeouts.forEach {
-        withTimeout(it) {
-            try { result = block() }
-            catch (e: CancellationException) { exception = e }
-        }
-        result?.let { return it }
+        try { val x = withTimeout(it) { block() }; return x } // FIXME: why can't I inline x????
+        catch (e: CancellationException) { exception = e }
     }
     throw exception!!
 }
