@@ -1,6 +1,8 @@
 package com.elpassion.crweather
 
-import android.arch.lifecycle.*
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -10,16 +12,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.navigation.*
 
-class MainActivity : AppCompatActivity(), LifecycleRegistryOwner {
-
-    val registry = LifecycleRegistry(this)
+class MainActivity : AppCompatActivity() {
 
     val adapter = ChartsAdapter()
 
     lateinit var model: MainModel
-
-    // can not use LifecycleActivity (it does not have setSupportActionBar)
-    override fun getLifecycle() = registry
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
