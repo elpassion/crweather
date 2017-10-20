@@ -129,7 +129,7 @@ fun Chart.moveABitTo(destination: Chart, velocities: Chart) {
 private fun updateVelocity(velocity: Float, currentPosition: Float, destinationPosition: Float): Float {
     var newVelocity = velocity + (destinationPosition - currentPosition) / 20f
     if (signum(newVelocity) != signum(destinationPosition - currentPosition))
-        newVelocity = newVelocity / 1.5f
+        newVelocity /= 1.5f
     return newVelocity
 }
 

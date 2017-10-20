@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initModel() {
         model = ViewModelProviders.of(this).get(MainModel::class.java)
-        model.loading.observe { displayLoading(it ?: false) }
+        model.loading.observe { displayLoading(it == true) }
         model.city.observe { displayCity(it ?: "") }
         model.charts.observe { displayCharts(it ?: emptyList()) }
         model.message.observe { displayMessage(it ?: "") }
