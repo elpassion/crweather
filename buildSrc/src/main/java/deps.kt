@@ -6,7 +6,7 @@
 
 object Vers {
     val kotlin = "1.2.30"
-    val kotlinxCoroutines = "0.22"
+    val kotlinxCoroutines = "0.22.5"
     val androidGradlePlugin = "3.2.0-alpha02"
     val androidMavenGradlePlugin = "2.0"
     val androidCompileSdk = 27
