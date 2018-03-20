@@ -1,5 +1,6 @@
 package com.elpassion.crweather
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -22,22 +23,29 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         drawer?.run {
-            val toggle = ActionBarDrawerToggle(this@MainActivity, drawer, toolbar,
-                    R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+            val toggle = ActionBarDrawerToggle(
+                    this@MainActivity,
+                    drawer,
+                    toolbar,
+                    R.string.navigation_drawer_open,
+                    R.string.navigation_drawer_close
+            )
             addDrawerListener(toggle)
             toggle.syncState()
         }
-        navigation.setNavigationItemSelectedListener { model.action(SelectCity(it.title.toString())) }
+        navigation.setNavigationItemSelectedListener {
+            model.action(SelectCity(it.title.toString()))
+        }
         recycler.adapter = adapter
         initModel()
     }
 
     private fun initModel() {
         model = ViewModelProviders.of(this).get(MainModel::class.java)
-        model.loading.observe(this, Observer { displayLoading(it ?: false) })
-        model.city.observe(this, Observer { displayCity(it ?: "") })
-        model.charts.observe(this, Observer { displayCharts(it ?: emptyList()) })
-        model.message.observe(this, Observer { displayMessage(it ?: "") })
+        model.loading.observe { displayLoading(it == true) }
+        model.city.observe { displayCity(it ?: "") }
+        model.charts.observe { displayCharts(it ?: emptyList()) }
+        model.message.observe { displayMessage(it ?: "") }
     }
 
     private fun displayLoading(loading: Boolean) {
@@ -55,4 +63,7 @@ class MainActivity : AppCompatActivity() {
     private fun displayMessage(message: String) {
         if (message.isNotBlank()) toast(message)
     }
+
+    private fun <T> LiveData<T>.observe(observe: (T?) -> Unit)
+            = observe(this@MainActivity, Observer { observe(it) })
 }
