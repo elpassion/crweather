@@ -40,7 +40,7 @@ class MainModel : ViewModel() {
 
     fun action(action: Action) = actor.offer(action)
 
-    override fun onCleared() = actor.cancel().unit
+    override fun onCleared() = actor.close().unit
 
     /**
      * @throws IllegalStateException
