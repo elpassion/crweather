@@ -1,12 +1,16 @@
+@file:Suppress("unused")
+
 /**
- * Common dependencies for typical java/kotlin/android projects
+ * Common dependencies versions for java/kotlin/android projects
  *
  * @see <a href="https://github.com/langara/deps.kt">https://github.com/langara/deps.kt</a>
  */
-
 object Vers {
-    val kotlin = "1.2.30"
-    val kotlinxCoroutines = "0.22.5"
+    val kotlinMajor = 1
+    val kotlinMinor = 2
+    val kotlinPatch = 30
+    val kotlin = "$kotlinMajor.$kotlinMinor.$kotlinPatch"
+    val kotlinxCoroutines = "0.22"
     val androidGradlePlugin = "3.2.0-alpha02"
     val androidMavenGradlePlugin = "2.0"
     val androidCompileSdk = 27
@@ -41,12 +45,11 @@ object Vers {
     val androidTestRunnerClass = "android.support.test.runner.AndroidJUnitRunner"
 }
 
-private fun dep(group: String, name: String, version: String) = mapOf(
-        "group" to group,
-        "name" to name,
-        "version" to version
-)
-
+/**
+ * Common dependencies for java/kotlin/android projects
+ *
+ * @see <a href="https://github.com/langara/deps.kt">https://github.com/langara/deps.kt</a>
+ */
 object Deps {
     val kotlinGradlePlugin = dep("org.jetbrains.kotlin", "kotlin-gradle-plugin", Vers.kotlin)
     val androidGradlePlugin = dep("com.android.tools.build", "gradle", Vers.androidGradlePlugin)
@@ -100,4 +103,9 @@ object Deps {
     val androidTestRules = dep("com.android.support.test", "rules", Vers.androidSupportTest)
 }
 
+private fun dep(group: String, name: String, version: String) = mapOf(
+        "group" to group,
+        "name" to name,
+        "version" to version
+)
 

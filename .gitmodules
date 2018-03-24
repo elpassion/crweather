@@ -1,0 +1,3 @@
+[submodule "deps.kt"]
+	path = deps.kt
+	url = git@github.com:langara/deps.kt.git
