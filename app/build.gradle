@@ -11,10 +11,9 @@ kotlin {
 
 android {
     compileSdkVersion Vers.androidCompileSdk
-    buildToolsVersion Vers.androidBuildTools
     defaultConfig {
         applicationId "com.elpassion.crweather"
-        minSdkVersion Vers.androidTargetSdk
+        minSdkVersion Vers.androidMinSdk
         targetSdkVersion Vers.androidTargetSdk
         versionCode 1
         versionName "1.0"
