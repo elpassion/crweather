@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 object OpenWeatherMapApi {
 
-    const val URL = "https://api.openweathermap.org"
+    private const val URL = "https://api.openweathermap.org"
 
     class Clouds {
         /** Cloudiness, % */

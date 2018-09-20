@@ -8,15 +8,17 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.navigation.*
+import kotlinx.android.synthetic.main.activity_main.drawer
+import kotlinx.android.synthetic.main.activity_main.toolbar
+import kotlinx.android.synthetic.main.content_main.progress
+import kotlinx.android.synthetic.main.content_main.recycler
+import kotlinx.android.synthetic.main.navigation.navigation
 
 class MainActivity : AppCompatActivity() {
 
-    val adapter = ChartsAdapter()
+    private val adapter = ChartsAdapter()
 
-    lateinit var model: MainModel
+    private lateinit var model: MainModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

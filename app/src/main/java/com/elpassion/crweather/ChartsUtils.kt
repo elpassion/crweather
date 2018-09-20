@@ -102,7 +102,7 @@ fun Map<String, List<Chart>>.getFreshCharts(city: String) = get(city)?.takeIf {
 }
 
 private fun List<DailyForecast>.toPoints(toValue: DailyForecast.() -> Float?)
-        = map { it.toPointOrNull(toValue) }.filterNotNull()
+        = mapNotNull { it.toPointOrNull(toValue) }
 
 private fun DailyForecast.toPointOrNull(toValue: DailyForecast.() -> Float?)
         = toValue()?.let { Point(dt.toFloat(), it) }
@@ -112,7 +112,7 @@ fun Chart.deepCopy() = copy(lines = lines.map { it.deepCopy() })
 
 fun Line.deepCopy() = copy(points = points.map { it.copy() })
 
-fun Chart.resetPoints() = apply { lines.forEach { it.points.forEach { it.x = 0f; it.y = 0f } } }
+fun Chart.resetPoints() = apply { lines.forEach { it.points.forEach { point -> point.x = 0f; point.y = 0f } } }
 
 fun Chart.moveABitTo(destination: Chart, velocities: Chart) {
     for ((lineIdx, line) in lines.withIndex())

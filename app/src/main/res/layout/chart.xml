@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:clickable="true"
+    android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:padding="4dp"
-    >
+    android:padding="4dp">
 
     <com.elpassion.crweather.ChartView
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/chart_height_small"
-        />
+        android:layout_height="@dimen/chart_height_small" />
 
 </android.support.v7.widget.CardView>

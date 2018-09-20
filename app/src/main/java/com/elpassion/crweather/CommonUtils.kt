@@ -5,7 +5,7 @@ import kotlinx.coroutines.experimental.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
+import java.util.ArrayList
 
 @Suppress("unused") val Any?.unit get() = Unit
 
@@ -23,7 +23,7 @@ fun <T> List<T>.changes(destination: MutableList<Pair<T, T>> = ArrayList(size))
  */
 suspend fun <T> Call<T>.await(): T = suspendCancellableCoroutine { continuation ->
 
-    continuation.invokeOnCompletion { if (continuation.isCancelled) cancel() }
+    continuation.invokeOnCancellation { cancel() }
 
     val callback = object : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) = continuation.tryToResume { throw t }
