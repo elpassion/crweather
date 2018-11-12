@@ -1,11 +1,15 @@
 package com.elpassion.crweather
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.chart.view.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 class ChartsAdapter : RecyclerView.Adapter<ChartsAdapter.Holder>() {
 
     var charts = emptyList<Chart>()

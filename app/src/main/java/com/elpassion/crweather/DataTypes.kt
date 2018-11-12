@@ -1,6 +1,6 @@
 package com.elpassion.crweather
 
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 
 
 data class Chart(

@@ -2,15 +2,13 @@ package com.elpassion.crweather
 
 import android.content.Context
 import android.util.AttributeSet
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.android.Main
-import kotlinx.coroutines.experimental.channels.Channel
-import kotlinx.coroutines.experimental.channels.actor
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.isActive
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.actor
 
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 class ChartView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,

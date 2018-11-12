@@ -5,11 +5,11 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.support.annotation.ColorInt
-import android.support.annotation.LayoutRes
 import android.view.Menu
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.ColorInt
+import androidx.annotation.LayoutRes
 
 private val CHART_PAINT = Paint().apply {
     style = Paint.Style.STROKE

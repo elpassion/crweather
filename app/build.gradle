@@ -1,13 +1,7 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
 
 android {
     compileSdkVersion Vers.androidCompileSdk
@@ -36,20 +30,15 @@ dependencies {
     implementation Deps.kotlinStdlib7
     implementation Deps.kotlinxCoroutinesCore
     implementation Deps.kotlinxCoroutinesAndroid
-    implementation Deps.androidSupportAppcompat
-    implementation Deps.androidSupportV4
-    implementation Deps.androidSupportDesign
-    implementation Deps.androidSupportRecyclerview
-    implementation Deps.androidSupportCardview
-    implementation Deps.androidSupportConstraint
-    implementation Deps.androidArchLifecycleExtensions
+    implementation Deps.androidxAppcompat
+    implementation Deps.androidMaterial
+    implementation Deps.androidxRecyclerview
+    implementation Deps.androidxCardview
+    implementation Deps.androidxConstraint
+    implementation Deps.androidxLifecycleExtensions
     implementation Deps.retrofit
     implementation Deps.retrofitMoshi
     implementation Deps.okhttpLogging
-    kapt Deps.androidArchLifecycleCompiler
     testImplementation Deps.junit
-    androidTestImplementation(Deps.androidEspresso, {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
 }
 

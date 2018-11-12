@@ -2,11 +2,12 @@ package com.elpassion.crweather
 
 import android.content.Context
 import android.graphics.Canvas
-import android.support.annotation.CallSuper
 import android.util.AttributeSet
 import android.view.View
-import kotlin.coroutines.experimental.Continuation
-import kotlin.coroutines.experimental.suspendCoroutine
+import androidx.annotation.CallSuper
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.suspendCoroutine
+import kotlin.coroutines.resume
 
 
 open class CrView @JvmOverloads constructor(
