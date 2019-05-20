@@ -202,6 +202,6 @@ object OpenWeatherMapApi {
             .baseUrl(URL)
             .addConverterFactory(MoshiConverterFactory.create()).build()
 
-    val service = retrofit.create(Service::class.java)!!
+    val service = retrofit.create(Service::class.java)
 }
 

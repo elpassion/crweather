@@ -7,7 +7,7 @@ android {
     compileSdkVersion Vers.androidCompileSdk
     defaultConfig {
         applicationId "com.elpassion.crweather"
-        minSdkVersion Vers.androidMinSdk
+        minSdkVersion 26
         targetSdkVersion Vers.androidTargetSdk
         versionCode 1
         versionName "1.0"
@@ -27,7 +27,7 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation Deps.kotlinStdlib7
+    implementation Deps.kotlinStdlib8
     implementation Deps.kotlinxCoroutinesCore
     implementation Deps.kotlinxCoroutinesAndroid
     implementation Deps.androidxAppcompat
