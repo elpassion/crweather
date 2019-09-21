@@ -36,6 +36,7 @@ dependencies {
     implementation Deps.androidxCardview
     implementation Deps.androidxConstraint
     implementation Deps.androidxLifecycleExtensions
+    implementation Deps.androidxLifecycleViewModelKtx
     implementation Deps.retrofit
     implementation Deps.retrofitMoshi
     implementation Deps.okhttpLogging
